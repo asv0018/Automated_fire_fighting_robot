@@ -1,6 +1,7 @@
-/*------ Arduino Fire Fighting Robot Code by hobby project---- */
- 
 #include <Servo.h>  //include servo.h library
+#include <SoftwareSerial.h>
+
+SoftwareSerial gsm(2,3); // Rx, Tx on arduino
 Servo myservo;
 
 int pos = 0;    
@@ -18,6 +19,8 @@ const int echoPin = A1;
 #define RM1 8       // right motor
 #define RM2 7       // right motor
 
+#define BUZZER 11
+
 #define servo 9
 
 #define pump 4
@@ -34,8 +37,12 @@ void setup(){
   pinMode(RM2, OUTPUT);
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
+  pinMode(BUZZER, OUTPUT);
   myservo.attach(servo);
-  myservo.write(90); 
+  myservo.write(90);
+  gsm.begin(9600);
+  Serial.begin(9600);
+  init_sms();
 }
  
 void put_off_fire() {
@@ -61,8 +68,9 @@ void put_off_fire() {
   myservo.write(90);
   
   fire=false;
+  
 }
- 
+
 void loop(){
     myservo.write(90);
     
@@ -108,14 +116,15 @@ void loop(){
 
 
 void init_sms(){
-  Serial.println("AT+CMGF=1");
-  delay(30);
-  Serial.println("AT+CMGS=\"+91xxxxxxxxxx\"");   // use your 10 digit cell no. here
+  gsm.println("AT+CMGF=1");
   delay(30);
  }
 
 void send_sms(){
- Serial.write(26);
+ gsm.println("AT+CMGS=\"+917795330913\"");   // use your 10 digit cell no. here
+ delay(30);
+ gsm.write("This is a test message");
+ gsm.write(26);
 }
 
 long measure_obstacle_distance(){
