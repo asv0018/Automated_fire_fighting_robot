@@ -55,13 +55,13 @@ void put_off_fire() {
     digitalWrite(pump, LOW);
     delay(500);
     send_sms();
-    for (pos = 50; pos <= 130; pos += 1) { 
+    for (pos = 30; pos <= 150; pos += 1) { 
     myservo.write(pos); 
-    delay(10);  
+    delay(20);  
   }
-  for (pos = 130; pos >= 50; pos -= 1) { 
+  for (pos = 150; pos >= 30; pos -= 1) { 
     myservo.write(pos); 
-    delay(10);
+    delay(20);
   }
   digitalWrite(BUZZER,LOW);
   digitalWrite(pump,HIGH);
