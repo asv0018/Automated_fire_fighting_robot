@@ -51,10 +51,10 @@ void put_off_fire() {
     digitalWrite(LM2, HIGH);
     digitalWrite(RM1, HIGH);
     digitalWrite(RM2, HIGH);
-   pinMode(pump,OUTPUT);
-   digitalWrite(pump, LOW);
-   delay(500);
-    
+    pinMode(pump,OUTPUT);
+    digitalWrite(pump, LOW);
+    delay(500);
+    send_sms();
     for (pos = 50; pos <= 130; pos += 1) { 
     myservo.write(pos); 
     delay(10);  
@@ -63,7 +63,7 @@ void put_off_fire() {
     myservo.write(pos); 
     delay(10);
   }
-  
+  digitalWrite(BUZZER,LOW);
   digitalWrite(pump,HIGH);
   myservo.write(90);
   
@@ -88,6 +88,7 @@ void loop(){
       digitalWrite(LM2, LOW);
       digitalWrite(RM1, HIGH);
       digitalWrite(RM2, LOW);
+      digitalWrite(BUZZER,HIGH);
       fire = true;
       }
     }
@@ -114,16 +115,16 @@ void loop(){
      
 }
 
-
+ 
 void init_sms(){
   gsm.println("AT+CMGF=1");
   delay(30);
  }
 
 void send_sms(){
- gsm.println("AT+CMGS=\"+917795330913\"");   // use your 10 digit cell no. here
+ gsm.println("AT+CMGS=\"+918217520507\"");   // use your 10 digit cell no. here
  delay(30);
- gsm.write("This is a test message");
+ gsm.write("ALERT!!!, Fire is detected!.");
  gsm.write(26);
 }
 
